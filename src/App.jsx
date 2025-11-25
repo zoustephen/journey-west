@@ -376,6 +376,10 @@ const HomeView = ({ username, unlocked, completedQuizzes, allEpisodes, onEpisode
       <div className="mt-8 text-gray-400 text-xs">
         {unlocked.length} / {allEpisodes.length} Unlocked
       </div>
+
+      <div className="mt-4 text-gray-400/60 text-[10px] font-medium font-sans pb-4">
+        版权所有：Jasper and His Dad
+      </div>
     </div>
 );
 
