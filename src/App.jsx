@@ -1,22 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Play, BookOpen, Star, ArrowRight, Volume2, Home, Check, RefreshCw, Trophy, Mic, Loader, Lock, X, Settings, User, Unlock } from 'lucide-react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, updateDoc, runTransaction } from 'firebase/firestore';
-
-// --- Firebase Initialization ---
-const firebaseConfig = {
-  apiKey: "AIzaSyDSOd0rXxkAAyOUMKxg-3RzkuVj3vlz1NY",
-  authDomain: "journey-west-kids.firebaseapp.com",
-  projectId: "journey-west-kids",
-  storageBucket: "journey-west-kids.firebasestorage.app",
-  messagingSenderId: "776840091084",
-  appId: "1:776840091084:web:5785751ebc051955aab969"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const appId = "journey-west-v1"; 
+import React, { useState, useEffect } from 'react';
+import { Play, BookOpen, Star, ArrowRight, Volume2, Home, Check, Trophy, Mic, Loader, Lock, X, User, Unlock } from 'lucide-react';
 
 // --- Data Generator ---
 const BASE_EPISODES = [
@@ -141,6 +124,7 @@ EXTENDED_TITLES.forEach(item => {
         title: item.title,
         titleCN: item.titleCN,
         emoji: item.emoji,
+        // Generic content for structure, but with specific character/title injection
         scenes: [
             { text: `They met ${item.title}.`, translation: `他们遇到了${item.titleCN}。`, imageParams: "bg-indigo-100", character: item.emoji },
             { text: "It was a hard challenge.", translation: "这是一个艰难的挑战。", imageParams: "bg-blue-100", character: "🔥" },
@@ -277,7 +261,7 @@ const LeaderboardView = ({ leaderboardData, currentUser, onBack }) => (
                     <div className="text-center text-gray-400 py-8">No heroes yet! Be the first!</div>
                 ) : (
                     leaderboardData.map((entry, idx) => (
-                        <div key={idx} className={`flex items-center justify-between p-4 rounded-xl mb-2 ${entry.uid === currentUser?.uid ? 'bg-blue-50 border-2 border-blue-200' : 'bg-gray-50'}`}>
+                        <div key={idx} className={`flex items-center justify-between p-4 rounded-xl mb-2 ${entry.isMe ? 'bg-blue-50 border-2 border-blue-200' : 'bg-gray-50'}`}>
                             <div className="flex items-center gap-4">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${idx === 0 ? 'bg-yellow-500' : idx === 1 ? 'bg-gray-400' : idx === 2 ? 'bg-orange-600' : 'bg-blue-200'}`}>
                                     {idx + 1}
@@ -465,7 +449,9 @@ const StoryView = ({ activeEpisodeId, allEpisodes, sceneIndex, setSceneIndex, on
 const VocabView = ({ activeEpisodeId, allEpisodes, onBack }) => {
     const ep = allEpisodes.find(e => e.id === activeEpisodeId);
     const [learnedWords, setLearnedWords] = useState(new Set());
-    const [showSuccess, setShowSuccess] = useState(false);
+    
+    // Check completion status
+    const isComplete = learnedWords.size === ep.vocab.length;
 
     const markLearned = (idx) => {
       const newSet = new Set(learnedWords);
@@ -473,20 +459,13 @@ const VocabView = ({ activeEpisodeId, allEpisodes, onBack }) => {
       setLearnedWords(newSet);
     };
 
-    useEffect(() => {
-        if (learnedWords.size === ep.vocab.length && ep.vocab.length > 0) {
-            const timer = setTimeout(() => setShowSuccess(true), 800);
-            return () => clearTimeout(timer);
-        }
-    }, [learnedWords, ep.vocab.length]);
-
     return (
-      <div className="min-h-screen bg-green-50 p-6 pt-20 flex flex-col items-center relative">
+      <div className="min-h-screen bg-green-50 p-6 pt-20 pb-32 flex flex-col items-center relative">
         <button onClick={onBack} className="absolute top-4 left-4 p-3 bg-white rounded-full shadow hover:bg-gray-100"><Home className="text-gray-600"/></button>
         <h2 className="text-3xl font-bold text-green-800 mb-2">Magic Words</h2>
         <div className="text-green-600 mb-8 font-medium">Collect all stars: {learnedWords.size} / {ep.vocab.length}</div>
         
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-4xl">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-4xl mb-8">
           {ep.vocab.map((v, idx) => {
             const isLearned = learnedWords.has(idx);
             return (
@@ -503,13 +482,16 @@ const VocabView = ({ activeEpisodeId, allEpisodes, onBack }) => {
             );
           })}
         </div>
-        {showSuccess && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-in fade-in duration-300">
-                <div className="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl border-4 border-green-400 transform scale-100 animate-in zoom-in-95 duration-200">
-                    <div className="text-6xl mb-4 animate-bounce">🌟</div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Amazing!</h3>
-                    <button onClick={onBack} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl shadow-lg">Back to Menu</button>
-                </div>
+
+        {/* Manual Finish Button (Replaces Auto-Popup) */}
+        {isComplete && (
+            <div className="fixed bottom-8 left-0 right-0 flex justify-center animate-in slide-in-from-bottom-10 fade-in duration-500 z-50">
+                <button 
+                    onClick={onBack}
+                    className="bg-green-500 hover:bg-green-600 text-white font-bold text-xl py-4 px-12 rounded-full shadow-[0_4px_0_rgb(21,128,61)] active:translate-y-1 active:shadow-none transition-all flex items-center gap-3"
+                >
+                    <Check strokeWidth={4} /> Finish Learning
+                </button>
             </div>
         )}
       </div>
@@ -588,7 +570,6 @@ const QuizView = ({ activeEpisodeId, allEpisodes, onBack, score, setScore, unloc
 // --- Main Application ---
 
 export default function JourneyWestApp() {
-  const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(true);
   
@@ -604,87 +585,67 @@ export default function JourneyWestApp() {
   const [unlockCode, setUnlockCode] = useState("");
   const [unlockError, setUnlockError] = useState("");
 
-  // --- Firebase Logic ---
+  // --- Initialize (Local Storage) ---
   useEffect(() => {
-    if (!auth) {
-      setLoading(false);
-      return; 
+    const savedData = localStorage.getItem('journey_west_save');
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        setUsername(parsed.username || "");
+        setScore(parsed.score || 0);
+        setUnlocked(parsed.unlocked || [1]);
+        setCompletedQuizzes(parsed.completedQuizzes || []);
+        setCurrentView('home');
+      } catch (e) {
+        console.error("Load error", e);
+      }
     }
-    const initAuth = async () => {
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
-      }
-    };
-    initAuth();
-
-    const unsubscribe = onAuthStateChanged(auth, async (u) => {
-      if (u) {
-        setUser(u);
-        const docRef = doc(db, 'artifacts', appId, 'users', u.uid, 'profile', 'data');
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setUsername(data.username || "Traveler");
-          setScore(data.score || 0);
-          setUnlocked(data.unlocked || [1]);
-          setCompletedQuizzes(data.completedQuizzes || []);
-          setCurrentView('home');
-        } else {
-          setCurrentView('register');
-        }
-      }
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    setLoading(false);
   }, []);
 
+  // --- Mock Leaderboard ---
   useEffect(() => {
-    if (!db || !user) return;
-    const q = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(d => d.data());
-      const sorted = data.sort((a, b) => b.score - a.score).slice(0, 10);
-      setLeaderboardData(sorted);
-    }, (error) => console.error("Leaderboard error:", error));
-    return () => unsubscribe();
-  }, [user]);
+    // Generate some fake "classmates" for local fun
+    const fakeData = [
+        { username: "Monkey King", score: 999, isMe: false },
+        { username: "Pigsy", score: 50, isMe: false },
+        { username: "Ne Zha", score: 200, isMe: false },
+        { username: "Red Boy", score: 150, isMe: false },
+        { username: username || "You", score: score, isMe: true }
+    ];
+    const sorted = fakeData.sort((a, b) => b.score - a.score);
+    setLeaderboardData(sorted);
+  }, [score, username]);
 
   const saveProgress = async (newScore, newUnlocked, newCompleted) => {
-    if (!user || !db) return;
-    const userDocPath = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
-    const leaderboardDocPath = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', user.uid);
-    const userData = {
+    const data = {
         username,
         score: newScore !== undefined ? newScore : score,
         unlocked: newUnlocked || unlocked,
         completedQuizzes: newCompleted || completedQuizzes,
     };
-    await setDoc(userDocPath, userData, { merge: true });
-    if (newScore !== undefined) {
-        await setDoc(leaderboardDocPath, { username, score: newScore !== undefined ? newScore : score, uid: user.uid }, { merge: true });
-    }
+    
+    // Update React State immediately
+    if (newScore !== undefined) setScore(newScore);
+    if (newUnlocked) setUnlocked(newUnlocked);
+    if (newCompleted) setCompletedQuizzes(newCompleted);
+
+    // Save to Local Storage
+    localStorage.setItem('journey_west_save', JSON.stringify(data));
   };
 
   const handleRegister = async () => {
     if (!username.trim()) return;
-    if (user && db) {
-       await saveProgress(0, [1], []);
-       setCurrentView('home');
-    } else {
-       setCurrentView('home');
-    }
+    await saveProgress(0, [1], []);
+    setCurrentView('home');
   };
 
   const handleUnlockCode = async () => {
       if (unlockCode.toLowerCase() === 'jasper') {
           const allIds = ALL_EPISODES.map(e => e.id);
-          setUnlocked(allIds);
-          setUnlockError("");
-          setShowUnlockModal(false);
+          await saveProgress(undefined, allIds, undefined); // Score keeps same
           setUnlockCode("");
-          await saveProgress(undefined, allIds, undefined);
+          setShowUnlockModal(false);
           const u = new SpeechSynthesisUtterance("Magic Code Accepted! All Levels Unlocked!");
           window.speechSynthesis.speak(u);
       } else {
@@ -735,7 +696,7 @@ export default function JourneyWestApp() {
       {currentView === 'leaderboard' && (
         <LeaderboardView 
             leaderboardData={leaderboardData}
-            currentUser={user}
+            currentUser={{ uid: 'me' }} // Mock user ID
             onBack={() => setCurrentView('home')}
         />
       )}
