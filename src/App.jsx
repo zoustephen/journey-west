@@ -2,35 +2,80 @@ import React, { useState, useEffect } from 'react';
 import { Play, BookOpen, Star, ArrowRight, Volume2, Home, Check, Trophy, Mic, Loader, Lock, X, User, Unlock, Map, Crown, Zap, Scroll, Users, Cloud, Hammer, Sword, Shield } from 'lucide-react';
 
 // ==========================================
-// 1. 数据设定 (50关 完整手写精修版)
+// 1. 数据设定 (DATA)
 // ==========================================
 
+// --- WEST WORLD DATA (50关 完整精修版) ---
 const WEST_EPISODES = [
   // --- 第一部分：出世与闹天宫 (1-5) ---
-  { id: 1, title: "The Stone Monkey", titleCN: "石猴出世", emoji: "🐵",
-    scenes: [ { text: "Long ago, a magic stone sat on a high mountain.", translation: "很久以前，一块神奇的石头坐落在高山上。", imageParams: "bg-stone-200", character: "🪨" }, { text: "The sun and moon shined on it for years.", translation: "日月照耀了它很多年。", imageParams: "bg-sky-200", character: "☀️🌙" }, { text: "One day, the stone cracked open. Boom!", translation: "有一天，石头裂开了。轰！", imageParams: "bg-orange-400", character: "💥" }, { text: "A stone monkey was born from the egg.", translation: "一只石猴从蛋里出生了。", imageParams: "bg-yellow-100", character: "🐵" }, { text: "He bowed to the four directions.", translation: "他向四方行礼。", imageParams: "bg-green-100", character: "🙏" }, { text: "Golden light shot from his eyes.", translation: "金光从他的眼中射出。", imageParams: "bg-blue-200", character: "👀✨" } ],
+  {
+    id: 1, title: "The Stone Monkey", titleCN: "石猴出世", emoji: "🐵",
+    scenes: [
+      { text: "Long ago, a magic stone sat on a high mountain.", translation: "很久以前，一块神奇的石头坐落在高山上。", imageParams: "bg-stone-200", character: "🪨" },
+      { text: "The sun and moon shined on it for years.", translation: "日月照耀了它很多年。", imageParams: "bg-sky-200", character: "☀️🌙" },
+      { text: "One day, the stone cracked open. Boom!", translation: "有一天，石头裂开了。轰！", imageParams: "bg-orange-400", character: "💥" },
+      { text: "A stone monkey was born from the egg.", translation: "一只石猴从蛋里出生了。", imageParams: "bg-yellow-100", character: "🐵" },
+      { text: "He bowed to the four directions.", translation: "他向四方行礼。", imageParams: "bg-green-100", character: "🙏" },
+      { text: "Golden light shot from his eyes to the sky.", translation: "金光从他的眼中射向天空。", imageParams: "bg-blue-200", character: "👀✨" }
+    ],
     vocab: [ { word: "Mountain", cn: "高山", emoji: "⛰️" }, { word: "Stone", cn: "石头", emoji: "🪨" }, { word: "Born", cn: "出生", emoji: "🐣" }, { word: "Light", cn: "光", emoji: "✨" } ],
-    quiz: { question: "What came out of the stone?", options: ["A Bird 🐦", "A Monkey 🐵", "A Pig 🐷"], answer: 1 } },
-  { id: 2, title: "The Waterfall Cave", titleCN: "发现水帘洞", emoji: "🌊",
-    scenes: [ { text: "The monkeys were playing by the river.", translation: "猴子们在河边玩耍。", imageParams: "bg-green-100", character: "🐒" }, { text: "They saw a huge waterfall rushing down.", translation: "他们看到一个巨大的瀑布冲刷下来。", imageParams: "bg-blue-300", character: "🌊" }, { text: "Who dares to jump through it?", translation: "谁敢跳过去？", imageParams: "bg-blue-100", character: "❓" }, { text: "I will go! shouted the Stone Monkey.", translation: "我去！石猴喊道。", imageParams: "bg-yellow-200", character: "🙋‍♂️" }, { text: "He closed his eyes and jumped.", translation: "他闭上眼跳了过去。", imageParams: "bg-blue-400", character: "💨" }, { text: "He found a cave behind the water.", translation: "他在水后发现了一个洞穴。", imageParams: "bg-purple-100", character: "🏰" } ],
+    quiz: { question: "What came out of the stone?", options: ["A Bird 🐦", "A Monkey 🐵", "A Pig 🐷"], answer: 1 }
+  },
+  {
+    id: 2, title: "The Waterfall Cave", titleCN: "发现水帘洞", emoji: "🌊",
+    scenes: [
+      { text: "The monkeys were playing by the river.", translation: "猴子们在河边玩耍。", imageParams: "bg-green-100", character: "🐒" },
+      { text: "They saw a huge waterfall rushing down.", translation: "他们看到一个巨大的瀑布冲刷下来。", imageParams: "bg-blue-300", character: "🌊" },
+      { text: "Who dares to jump through it?", translation: "谁敢跳过去？", imageParams: "bg-blue-100", character: "❓" },
+      { text: "I will go! shouted the Stone Monkey.", translation: "我去！石猴喊道。", imageParams: "bg-yellow-200", character: "🙋‍♂️" },
+      { text: "He closed his eyes and jumped. Swoosh!", translation: "他闭上眼跳了过去。嗖！", imageParams: "bg-blue-400", character: "💨" },
+      { text: "He found a beautiful cave behind the water.", translation: "他在水后发现了一个美丽的洞穴。", imageParams: "bg-purple-100", character: "🏰" }
+    ],
     vocab: [ { word: "Waterfall", cn: "瀑布", emoji: "🌊" }, { word: "Jump", cn: "跳", emoji: "🆙" }, { word: "Cave", cn: "洞穴", emoji: "🕳️" }, { word: "Brave", cn: "勇敢", emoji: "🦁" } ],
-    quiz: { question: "What is behind the water?", options: ["Fire 🔥", "A Cave 🏰", "Mud 🟤"], answer: 1 } },
-  { id: 3, title: "The Golden Stick", titleCN: "龙宫借宝", emoji: "🥖",
-    scenes: [ { text: "Monkey King needed a powerful weapon.", translation: "美猴王需要一件强力的兵器。", imageParams: "bg-indigo-900", character: "🤔" }, { text: "He dove deep into the Eastern Sea.", translation: "他潜入深海。", imageParams: "bg-blue-800", character: "🌊" }, { text: "The Dragon King showed him many swords.", translation: "龙王给他看了很多剑。", imageParams: "bg-blue-900", character: "🐉🗡️" }, { text: "They are too light! said Monkey.", translation: "太轻了！猴王说。", imageParams: "bg-gray-200", character: "🙅‍♂️" }, { text: "He saw a giant iron pillar glowing.", translation: "他看到一根巨大的发光铁柱。", imageParams: "bg-yellow-500", character: "🥖✨" }, { text: "It shrank into a small stick.", translation: "它缩小成一根棍子。", imageParams: "bg-orange-100", character: "👌" } ],
+    quiz: { question: "What is behind the water?", options: ["Fire 🔥", "A Cave 🏰", "Mud 🟤"], answer: 1 }
+  },
+  {
+    id: 3, title: "The Golden Stick", titleCN: "龙宫借宝", emoji: "🥖",
+    scenes: [
+      { text: "Monkey King needed a powerful weapon.", translation: "美猴王需要一件强力的兵器。", imageParams: "bg-indigo-900", character: "🤔" },
+      { text: "He dove deep into the Eastern Sea.", translation: "他潜入深海。", imageParams: "bg-blue-800", character: "🌊" },
+      { text: "The Dragon King showed him many swords.", translation: "龙王给他看了很多剑。", imageParams: "bg-blue-900", character: "🐉🗡️" },
+      { text: "They are too light! said Monkey.", translation: "太轻了！猴王说。", imageParams: "bg-gray-200", character: "🙅‍♂️" },
+      { text: "He saw a giant iron pillar glowing.", translation: "他看到一根巨大的发光铁柱。", imageParams: "bg-yellow-500", character: "🥖✨" },
+      { text: "It shrank into a small stick. Perfect!", translation: "它缩小成一根棍子。完美！", imageParams: "bg-orange-100", character: "👌" }
+    ],
     vocab: [ { word: "Weapon", cn: "兵器", emoji: "⚔️" }, { word: "Dragon", cn: "龙", emoji: "🐉" }, { word: "Heavy", cn: "重", emoji: "🏋️" }, { word: "Stick", cn: "棍子", emoji: "🥖" } ],
-    quiz: { question: "What weapon did he choose?", options: ["Sword 🗡️", "Golden Stick 🥖", "Shield 🛡️"], answer: 1 } },
-  { id: 4, title: "Pigsy Joins", titleCN: "收服八戒", emoji: "🐷",
-    scenes: [ { text: "Tang Monk met a pig monster.", translation: "唐僧遇到了一个猪妖。", imageParams: "bg-pink-100", character: "🐷" }, { text: "He was carrying a rake.", translation: "他扛着钉耙。", imageParams: "bg-orange-100", character: "🥘" }, { text: "Monkey King caught him by the ear.", translation: "悟空揪住了他的耳朵。", imageParams: "bg-yellow-100", character: "👂" }, { text: "Please stop! I wait for the Monk.", translation: "停下！我在等取经人。", imageParams: "bg-gray-200", character: "🙏" }, { text: "Guanyin told me to help you.", translation: "观音让我来帮你们。", imageParams:"bg-white", character: "✨" }, { text: "Pigsy became the second disciple.", translation: "八戒成了二徒弟。", imageParams: "bg-green-200", character: "🤝" } ],
+    quiz: { question: "What weapon did he choose?", options: ["Sword 🗡️", "Golden Stick 🥖", "Shield 🛡️"], answer: 1 }
+  },
+  {
+    id: 4, title: "Pigsy Joins", titleCN: "收服八戒", emoji: "🐷",
+    scenes: [
+      { text: "Tang Monk and Monkey met a pig monster.", translation: "唐僧和悟空遇到了一个猪妖。", imageParams: "bg-pink-100", character: "🐷" },
+      { text: "He was carrying a rake and looked hungry.", translation: "他扛着钉耙，看起来很饿。", imageParams: "bg-orange-100", character: "🥘" },
+      { text: "Monkey King pulled his ear. Caught you!", translation: "悟空揪住他的耳朵。抓到你了！", imageParams: "bg-yellow-100", character: "👂" },
+      { text: "Please stop! I wait for the Monk.", translation: "停下！我在等取经人。", imageParams: "bg-gray-200", character: "🙏" },
+      { text: "Guanyin told me to help you.", translation: "观音让我来帮你们。", imageParams: "bg-white", character: "✨" },
+      { text: "Pigsy became the second disciple.", translation: "八戒成了二徒弟。", imageParams: "bg-green-200", character: "🤝" }
+    ],
     vocab: [ { word: "Pig", cn: "猪", emoji: "🐷" }, { word: "Hungry", cn: "饿", emoji: "🤤" }, { word: "Ear", cn: "耳朵", emoji: "👂" }, { word: "Help", cn: "帮忙", emoji: "🆘" } ],
-    quiz: { question: "What does Pigsy like?", options: ["Fighting ⚔️", "Eating 🥘", "Running 🏃"], answer: 1 } },
-  { id: 5, title: "River of Sand", titleCN: "流沙河", emoji: "👹",
-    scenes: [ { text: "A wide river blocked their path.", translation: "一条宽阔的大河挡住了路。", imageParams: "bg-blue-400", character: "🌊" }, { text: "The water was dark and swirling.", translation: "河水漆黑且湍急。", imageParams: "bg-blue-800", character: "🌀" }, { text: "A monster with a skull necklace jumped out.", translation: "一个戴骷髅项链的妖怪跳了出来。", imageParams: "bg-gray-700", character: "👹" }, { text: "He fought with Monkey and Pigsy.", translation: "他和悟空八戒打了起来。", imageParams: "bg-red-200", character: "⚔️" }, { text: "The gourd helps us float.", translation: "葫芦帮我们漂浮。", imageParams: "bg-yellow-200", character: "🏺" }, { text: "Sandy joined the team.", translation: "沙僧加入了队伍。", imageParams: "bg-green-300", character: "👨‍👨‍👦‍👦" } ],
+    quiz: { question: "What does Pigsy like?", options: ["Fighting ⚔️", "Eating 🥘", "Running 🏃"], answer: 1 }
+  },
+  {
+    id: 5, title: "River of Sand", titleCN: "流沙河", emoji: "👹",
+    scenes: [
+      { text: "A wide river blocked their path.", translation: "一条宽阔的大河挡住了路。", imageParams: "bg-blue-400", character: "🌊" },
+      { text: "The water was dark and swirling.", translation: "河水漆黑且湍急。", imageParams: "bg-blue-800", character: "🌀" },
+      { text: "A monster with a skull necklace jumped out.", translation: "一个戴骷髅项链的妖怪跳了出来。", imageParams: "bg-gray-700", character: "👹" },
+      { text: "He fought with Monkey and Pigsy.", translation: "他和悟空八戒打了起来。", imageParams: "bg-red-200", character: "⚔️" },
+      { text: "The gourd helps us float.", translation: "葫芦帮我们漂浮。", imageParams: "bg-yellow-200", character: "🏺" },
+      { text: "Sandy joined the team. Now we are four.", translation: "沙僧加入了队伍。现在我们有四个人了。", imageParams: "bg-green-300", character: "👨‍👨‍👦‍👦" }
+    ],
     vocab: [ { word: "River", cn: "河", emoji: "🏞️" }, { word: "Necklace", cn: "项链", emoji: "📿" }, { word: "Fight", cn: "战斗", emoji: "🥊" }, { word: "Team", cn: "团队", emoji: "🤝" } ],
-    quiz: { question: "Who lived in the river?", options: ["Fish 🐟", "Sandy 👹", "Bird 🐦"], answer: 1 } },
-
-  // --- 6-20: 取经磨难 ---
-  { id: 6, title: "Ginseng Fruit", titleCN: "偷吃人参果", emoji: "🍑",
-    scenes: [{text:"They arrived at a beautiful temple.", translation:"他们来到一座美丽的道观。", imageParams:"bg-green-100", character:"⛩️"}, {text:"There was a tree with baby-shaped fruit.", translation:"有一棵树长着婴儿形状的果子。", imageParams:"bg-green-300", character:"🌳"}, {text:"It is Ginseng Fruit. Very rare.", translation:"那是人参果。非常稀有。", imageParams:"bg-pink-100", character:"👶"}, {text:"Pigsy wanted to taste one.", translation:"八戒想尝一个。", imageParams:"bg-orange-100", character:"😋"}, {text:"Monkey knocked three down.", translation:"悟空打下了三个。", imageParams:"bg-yellow-100", character:"🥢"}, {text:"Oh no! The tree fell over!", translation:"糟了！树倒了！", imageParams:"bg-brown-400", character:"🪵"}], vocab:[{word:"Fruit", cn:"水果", emoji:"🍎"}, {word:"Tree", cn:"树", emoji:"🌳"}, {word:"Baby", cn:"婴儿", emoji:"👶"}, {word:"Taste", cn:"尝", emoji:"😋"}], quiz:{question:"What did the fruit look like?", options:["Babies 👶", "Apples 🍎"], answer:0} },
+    quiz: { question: "Who lived in the river?", options: ["Fish 🐟", "Sandy 👹", "Bird 🐦"], answer: 1 }
+  },
+  
+  // --- 第二部分：取经路上的磨难 (6-15) ---
+  { id: 6, title: "Ginseng Fruit", titleCN: "偷吃人参果", emoji: "🍑", scenes: [{text:"They arrived at a beautiful temple.", translation:"他们来到一座美丽的道观。", imageParams:"bg-green-100", character:"⛩️"}, {text:"There was a tree with baby-shaped fruit.", translation:"有一棵树长着婴儿形状的果子。", imageParams:"bg-green-300", character:"🌳"}, {text:"It is Ginseng Fruit. Very rare.", translation:"那是人参果。非常稀有。", imageParams:"bg-pink-100", character:"👶"}, {text:"Pigsy wanted to taste one.", translation:"八戒想尝一个。", imageParams:"bg-orange-100", character:"😋"}, {text:"Monkey knocked three down.", translation:"悟空打下了三个。", imageParams:"bg-yellow-100", character:"🥢"}, {text:"Oh no! The tree fell over!", translation:"糟了！树倒了！", imageParams:"bg-brown-400", character:"🪵"}], vocab:[{word:"Fruit", cn:"水果", emoji:"🍎"}, {word:"Tree", cn:"树", emoji:"🌳"}, {word:"Baby", cn:"婴儿", emoji:"👶"}, {word:"Taste", cn:"尝", emoji:"😋"}], quiz:{question:"What did the fruit look like?", options:["Babies 👶", "Apples 🍎"], answer:0} },
   { id: 7, title: "White Bone Demon", titleCN: "三打白骨精", emoji: "💀", scenes: [{text:"A pretty girl gave them food.", translation:"一个漂亮的女孩给他们送饭。", imageParams:"bg-pink-50", character:"👩"}, {text:"Monkey saw she was a demon.", translation:"悟空看出她是妖怪。", imageParams:"bg-red-100", character:"👁️"}, {text:"He hit her with his stick.", translation:"他用棒子打了她。", imageParams:"bg-gray-200", character:"🥖"}, {text:"She turned into an old lady.", translation:"她变成了一个老奶奶。", imageParams:"bg-gray-300", character:"👵"}, {text:"Monkey hit her again.", translation:"悟空又打了她。", imageParams:"bg-red-200", character:"💥"}, {text:"The monk was very angry.", translation:"唐僧非常生气。", imageParams:"bg-red-500", character:"😡"}], vocab:[{word:"Demon", cn:"妖怪", emoji:"👹"}, {word:"Angry", cn:"生气", emoji:"😠"}, {word:"Bone", cn:"骨头", emoji:"🦴"}, {word:"Lady", cn:"女士", emoji:"👩"}], quiz:{question:"Who was the girl?", options:["A Villager", "White Bone Demon"], answer:1} },
   { id: 8, title: "Yellow Robe", titleCN: "黄袍怪", emoji: "🧥", scenes: [{text:"The monk was captured.", translation:"唐僧被抓走了。", imageParams:"bg-gray-800", character:"🕸️"}, {text:"A monster in a yellow robe lived here.", translation:"一个穿黄袍的妖怪住在这里。", imageParams:"bg-yellow-600", character:"🧥"}, {text:"He turned the monk into a tiger!", translation:"他把唐僧变成了老虎！", imageParams:"bg-orange-400", character:"🐅"}, {text:"Pigsy went to find Monkey.", translation:"八戒去找悟空。", imageParams:"bg-green-100", character:"🏃"}, {text:"Monkey came back to help.", translation:"悟空回来帮忙了。", imageParams:"bg-yellow-200", character:"🐵"}, {text:"He defeated the monster.", translation:"他打败了妖怪。", imageParams:"bg-blue-200", character:"🏆"}], vocab:[{word:"Robe", cn:"长袍", emoji:"🧥"}, {word:"Tiger", cn:"老虎", emoji:"🐅"}, {word:"Yellow", cn:"黄色", emoji:"🟨"}, {word:"Find", cn:"寻找", emoji:"🔍"}], quiz:{question:"What did the monk become?", options:["A Tiger 🐅", "A Rabbit 🐇"], answer:0} },
   { id: 9, title: "Gold & Silver Horn", titleCN: "金角银角", emoji: "🦄", scenes: [{text:"Two monsters blocked the mountain.", translation:"两个妖怪挡住了山路。", imageParams:"bg-purple-800", character:"😈😈"}, {text:"They had a magic gourd.", translation:"他们有一个紫金葫芦。", imageParams:"bg-purple-400", character:"🏺"}, {text:"Call your name, do you dare answer?", translation:"叫你名字，你敢应吗？", imageParams:"bg-red-100", character:"🗣️"}, {text:"Monkey used a fake name.", translation:"悟空用了个假名字。", imageParams:"bg-blue-100", character:"🤥"}, {text:"He stole the gourd.", translation:"他偷走了葫芦。", imageParams:"bg-green-200", character:"🤏"}, {text:"The monsters were trapped inside.", translation:"妖怪被吸进去了。", imageParams:"bg-black", character:"📥"}], vocab:[{word:"Name", cn:"名字", emoji:"📛"}, {word:"Answer", cn:"回答", emoji:"🙋"}, {word:"Gourd", cn:"葫芦", emoji:"🏺"}, {word:"Trap", cn:"困住", emoji:"🥅"}], quiz:{question:"What happens if you answer?", options:["You get trapped", "You get gold"], answer:0} },
@@ -41,7 +86,7 @@ const WEST_EPISODES = [
   { id: 14, title: "Real & Fake Monkey", titleCN: "真假美猴王", emoji: "🎭", scenes: [{text:"Monkey hit some bad men.", translation:"悟空打死了一些坏人。", imageParams:"bg-gray-600", character:"👊"}, {text:"The monk sent him away.", translation:"唐僧把他赶走了。", imageParams:"bg-gray-200", character:"👋"}, {text:"Suddenly, another Monkey appeared.", translation:"突然，另一个悟空出现了。", imageParams:"bg-yellow-300", character:"🐵🐵"}, {text:"They looked exactly the same.", translation:"他们长得一模一样。", imageParams:"bg-yellow-100", character:"🪞"}, {text:"They fought to see who is real.", translation:"他们打起来比谁是真的。", imageParams:"bg-red-500", character:"⚔️"}, {text:"Buddha identified the Six-Eared Macaque.", translation:"如来佛认出了六耳猕猴。", imageParams:"bg-gold-100", character:"🧘"}], vocab:[{word:"Fake", cn:"假的", emoji:"🎭"}, {word:"Same", cn:"一样", emoji:"="}, {word:"Bad", cn:"坏", emoji:"👎"}, {word:"Real", cn:"真的", emoji:"✅"}], quiz:{question:"How many monkeys were there?", options:["One", "Two"], answer:1} },
   { id: 15, title: "Flaming Mountain", titleCN: "火焰山", emoji: "🌋", scenes: [{text:"It was too hot to walk.", translation:"太热了，走不动。", imageParams:"bg-orange-500", character:"🥵"}, {text:"A mountain of fire blocked the way.", translation:"一座火焰山挡住了路。", imageParams:"bg-red-600", character:"🔥⛰️"}, {text:"Monkey needed the Palm Leaf Fan.", translation:"悟空需要芭蕉扇。", imageParams:"bg-green-200", character:"🍃"}, {text:"Princess Iron Fan said no.", translation:"铁扇公主说不。", imageParams:"bg-purple-700", character:"🙅‍♀️"}, {text:"Monkey turned into a bug.", translation:"悟空变成了一只虫子。", imageParams:"bg-green-500", character:"🪰"}, {text:"He borrowed the fan and stopped the fire.", translation:"他借来了扇子，灭了火。", imageParams:"bg-blue-200", character:"🌬️"}], vocab:[{word:"Hot", cn:"热", emoji:"🔥"}, {word:"Fan", cn:"扇子", emoji:"🪭"}, {word:"Stop", cn:"停止", emoji:"🛑"}, {word:"Bug", cn:"虫子", emoji:"🪰"}], quiz:{question:"What stopped the fire?", options:["Water", "Magic Fan"], answer:1} },
   
-  // --- 第三部分：艰难的旅程 (16-20 精修) ---
+  // --- 第三部分：艰难的旅程 (16-35) ---
   { id: 16, title: "Bull Demon King", titleCN: "牛魔王", emoji: "🐂", scenes: [{text:"Bull Demon King was angry.", translation:"牛魔王很生气。", imageParams:"bg-red-800", character:"🐂"}, {text:"He turned into a giant white bull.", translation:"他变成了一头巨大的白牛。", imageParams:"bg-white", character:"🐂"}, {text:"He fought with Monkey King.", translation:"他和悟空打了起来。", imageParams:"bg-orange-500", character:"⚔️"}, {text:"Pigsy helped to fight.", translation:"八戒也来帮忙。", imageParams:"bg-pink-200", character:"🐷"}, {text:"Nezha came from the sky.", translation:"哪吒从天而降。", imageParams:"bg-red-200", character:"🧒"}, {text:"They caught the Bull King.", translation:"他们抓住了牛魔王。", imageParams:"bg-yellow-400", character:"⛓️"}], vocab:[{word:"Bull", cn:"公牛", emoji:"🐂"}, {word:"Fight", cn:"打架", emoji:"🥊"}, {word:"White", cn:"白色", emoji:"⚪"}, {word:"Sky", cn:"天空", emoji:"☁️"}], quiz:{question:"What animal is the Demon King?", options:["Bull", "Tiger"], answer:0} },
   { id: 17, title: "The Magic Fan", titleCN: "芭蕉扇", emoji: "🍃", scenes: [{text:"The fire was still burning.", translation:"火还在烧。", imageParams:"bg-orange-600", character:"🔥"}, {text:"Monkey waved the fan 49 times.", translation:"悟空扇了49下扇子。", imageParams:"bg-green-200", character:"👋"}, {text:"Heavy rain started to fall.", translation:"开始下大雨了。", imageParams:"bg-blue-400", character:"🌧️"}, {text:"The fire went out.", translation:"火熄灭了。", imageParams:"bg-gray-300", character:"💨"}, {text:"They returned the fan.", translation:"他们还回了扇子。", imageParams:"bg-purple-200", character:"🤝"}, {text:"They continued the journey.", translation:"他们继续赶路。", imageParams:"bg-yellow-100", character:"🚶"}], vocab:[{word:"Rain", cn:"雨", emoji:"🌧️"}, {word:"Stop", cn:"停止", emoji:"🛑"}, {word:"Fire", cn:"火", emoji:"🔥"}, {word:"Wave", cn:"挥动", emoji:"👋"}], quiz:{question:"Did the rain start?", options:["Yes", "No"], answer:0} },
   { id: 18, title: "Nine-Headed Bird", titleCN: "九头虫", emoji: "🦅", scenes: [{text:"The King lost a treasure.", translation:"国王丢了宝贝。", imageParams:"bg-yellow-100", character:"👑"}, {text:"It was stolen by a monster.", translation:"被妖怪偷走了。", imageParams:"bg-gray-800", character:"👺"}, {text:"The monster had nine heads.", translation:"妖怪有九个头。", imageParams:"bg-red-700", character:"🦅"}, {text:"It lived underwater.", translation:"它住在水下。", imageParams:"bg-blue-800", character:"🌊"}, {text:"Monkey and the dog god fought it.", translation:"悟空和哮天犬打了它。", imageParams:"bg-brown-500", character:"🐕"}, {text:"One head was bitten off.", translation:"一个头被咬掉了。", imageParams:"bg-red-500", character:"🩸"}], vocab:[{word:"Head", cn:"头", emoji:"🗣️"}, {word:"Steal", cn:"偷", emoji:"🤏"}, {word:"Nine", cn:"九", emoji:"9️⃣"}, {word:"Dog", cn:"狗", emoji:"🐕"}], quiz:{question:"How many heads did it have?", options:["One", "Nine"], answer:1} },
@@ -89,7 +134,7 @@ const MC_EPISODES = [
     titleCN: `MC关卡 ${i + 1}`,
     emoji: ["💎","🚨","🏠","⚔️","🧨","🌀","🏰","🌋","💀","🔥","👁️","📚","🌌","🐲","🥚"][i % 15] || "🧱",
     scenes: [{ text: "Steve is mining.", translation: "Steve在挖矿。", imageParams: "bg-stone-800", character: "⛏️" }],
-    vocab: [{ word: "Mine", cn: "挖", emoji: "⛏️" }, { word: "Run", cn: "跑", emoji: "🏃" }, { word: "Sleep", cn: "睡", emoji: "🛌" }, { word: "Eat", cn: "吃", emoji: "🍖" }],
+    vocab: [{ word: "Mine", cn: "挖", emoji: "⛏️" }],
     quiz: { question: "What is he doing?", options: ["Mining", "Sleeping"], answer: 0 }
   })),
   { id: 48, title: "The Final Strike", titleCN: "最后一击", emoji: "🗡️", scenes: [ { text: "The Wither Storm was huge.", translation: "凋零风暴太大了。", imageParams: "bg-purple-900", character: "👾" }, { text: "Crack! The block broke.", translation: "咔嚓！方块碎了。", imageParams: "bg-white animate-pulse", character: "💔" } ], vocab: [ { word: "Huge", cn: "巨大的", emoji: "🦖" } ], quiz: { question: "What broke?", options: ["Bed", "Block"], answer: 1 } },
@@ -165,28 +210,6 @@ const ScoreBadge = ({ score, theme }) => (
   </div>
 );
 
-// SHARED BUTTON DEFINITIONS
-const WestButton = ({ children, onClick, color }) => {
-    const colors = {
-        blue: "bg-blue-500 hover:bg-blue-600",
-        green: "bg-green-500 hover:bg-green-600",
-        orange: "bg-orange-500 hover:bg-orange-600"
-    };
-    return (
-        <button onClick={onClick} className={`${colors[color]} w-full px-6 py-4 rounded-2xl font-bold text-white text-lg shadow-lg active:scale-95 flex items-center justify-between group transition-all`}>
-            <div className="flex items-center gap-4">{children}</div>
-            <ArrowRight className="opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-        </button>
-    );
-};
-
-const MCButton = ({ children, onClick, color='gray' }) => (
-    <button onClick={onClick} className={`w-full border-2 px-4 py-3 font-bold uppercase text-white bg-${color}-600 border-${color}-800 shadow-[2px_2px_0_#000] flex items-center justify-between`}>
-        <div className="flex items-center gap-3">{children}</div>
-        <ArrowRight />
-    </button>
-);
-
 // ==========================================
 // 3. 页面组件
 // ==========================================
@@ -240,18 +263,6 @@ const LevelSelectView = ({ theme, username, progress, episodes, onBack, onSelect
         <div className={`min-h-screen p-4 pb-20 flex flex-col items-center ${isMC ? 'bg-stone-800 font-mono' : 'bg-sky-50 font-sans'}`}>
             <div className="w-full max-w-6xl flex justify-between items-center z-10 mt-4 mb-6 px-2">
                 <div className="flex items-center gap-3">
-                    {/* 🌟 修复：西游记世界的回到主页按钮 */}
-                    {!isMC && (
-                        <button onClick={onBack} className="p-3 rounded-full bg-white text-blue-500 hover:bg-blue-50 shadow-sm transition-all hover:scale-105 mr-2" title="Back to World Select">
-                            <Home size={20}/>
-                        </button>
-                    )}
-                    {isMC && (
-                         <button onClick={onBack} className="p-3 rounded-full bg-gray-700 text-white border-2 border-gray-500 hover:scale-105 mr-2 transition-all" title="Back to World Select">
-                            <Home size={20}/>
-                        </button>
-                    )}
-
                     {!isMC && <Cloud className="text-white/80 mr-2" size={32} />}
                     <div className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-sm ${isMC ? 'bg-gray-700 text-white border-2 border-gray-500' : 'bg-white text-blue-500'}`}>
                         <User size={18} />
@@ -262,6 +273,9 @@ const LevelSelectView = ({ theme, username, progress, episodes, onBack, onSelect
                     </button>
                     <button onClick={onOpenUnlock} className={`p-2 rounded-full shadow-sm transition-all hover:scale-105 ${isMC ? 'bg-gray-700 text-gray-400 border-2 border-gray-500' : 'bg-white text-gray-400'}`}>
                         <Lock size={18}/>
+                    </button>
+                    <button onClick={onBack} className={`ml-2 flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-full shadow-sm ${isMC ? 'bg-gray-800 text-gray-400 border border-gray-600' : 'bg-white/50 text-blue-900/70 hover:bg-white'}`}>
+                        <Home size={16}/> World Map
                     </button>
                 </div>
                 <ScoreBadge score={progress.score} theme={theme} />
@@ -298,6 +312,13 @@ const LevelSelectView = ({ theme, username, progress, episodes, onBack, onSelect
 
 const EpisodeMenu = ({ theme, ep, onNavigate, onBack }) => {
     const isMC = theme === 'mc';
+    const WestButton = ({ children, onClick, color }) => {
+        const colors = { blue: "bg-blue-500 hover:bg-blue-600", green: "bg-green-500 hover:bg-green-600", orange: "bg-orange-500 hover:bg-orange-600" };
+        return <button onClick={onClick} className={`${colors[color]} w-full px-6 py-4 rounded-2xl font-bold text-white text-lg shadow-lg active:scale-95 flex items-center justify-between group transition-all`}><div className="flex items-center gap-4">{children}</div><ArrowRight className="opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" /></button>;
+    };
+    const MCButton = ({ children, onClick, color='gray' }) => (
+        <button onClick={onClick} className={`w-full border-2 px-4 py-3 font-bold uppercase text-white bg-${color}-600 border-${color}-800 shadow-[2px_2px_0_#000] flex items-center justify-between`}><div className="flex items-center gap-3">{children}</div><ArrowRight /></button>
+    );
 
     return (
         <div className={`min-h-screen flex flex-col items-center p-6 pt-20 ${isMC ? 'bg-stone-900 font-mono text-white' : 'bg-[#FFFBF0] font-sans'}`}>
@@ -419,7 +440,6 @@ const QuizView = ({ theme, ep, onBack, onComplete }) => {
     const handleAns = (idx) => {
         if (idx === ep.quiz.answer) {
             setRes('correct');
-            onComplete(5);
         } else {
             setRes('wrong');
         }
@@ -480,7 +500,7 @@ const UnlockModal = ({ unlockCode, setUnlockCode, unlockError, handleUnlockCode,
             <div className={`mb-4 ${theme === 'mc' ? 'text-yellow-400' : 'text-orange-500'}`}>
                 <Lock size={32} className="mx-auto mb-2" />
                 <h3 className="font-bold text-lg uppercase">Parent Mode</h3>
-                <p className="text-xs opacity-70 mt-1">Enter "Jasper" to Unlock</p>
+                <p className="text-xs opacity-70 mt-1">Enter Verification Code to Unlock</p>
             </div>
             <input type="password" value={unlockCode} onChange={(e) => setUnlockCode(e.target.value)} className={`w-full p-2 text-center text-lg mb-2 outline-none ${theme === 'mc' ? 'bg-stone-900 border-2 border-gray-600 text-white focus:border-yellow-500' : 'bg-gray-100 rounded-xl border-2 border-transparent focus:border-orange-400 text-gray-800'}`} placeholder="CODE" />
             {unlockError && <div className="text-red-500 text-xs mb-2 font-bold">{unlockError}</div>}
@@ -524,33 +544,79 @@ const GameSessionWrapper = ({ theme, username, progress, episodes, onBackToHub, 
         const nextId = activeEpisodeId + 1;
         onUpdateProgress(nextId, scoreToAdd);
         
-        // Trigger victory if Level 50 is completed
+        // Trigger victory if Level 50 is completed (Works for BOTH worlds now)
         if (activeEpisodeId === 50) {
             setShowVictory(true);
         } else {
-            setView('level-select');
+            // 🌟 修复跳转：普通关卡完成后返回上一页（菜单页）
+            setView('menu'); 
         }
     };
 
     // VICTORY MODAL
-    if (showVictory) {
-        return (
-            <div className="fixed inset-0 z-[80] bg-black/90 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-1000">
-                <div className="absolute inset-0 opacity-50 animate-pulse" style={{backgroundImage: isMC ? 'radial-gradient(#fff 1px, transparent 1px)' : 'radial-gradient(gold 1px, transparent 1px)', backgroundSize: '20px 20px'}}></div>
-                {isMC ? <Crown size={80} className="text-yellow-400 mb-6 animate-bounce" /> : <Scroll size={80} className="text-yellow-400 mb-6 animate-bounce" />}
-                <h1 className={`text-4xl md:text-6xl font-bold mb-4 uppercase tracking-widest ${isMC ? 'text-white font-mono' : 'text-yellow-200 font-sans'}`}>
-                    {isMC ? "Victory!" : "Journey Completed!"}
-                </h1>
-                <p className={`text-xl mb-8 max-w-md px-4 ${isMC ? 'text-green-400 font-mono' : 'text-white font-sans'}`}>
-                    {isMC ? "You defeated the Wither Storm! True Hero!" : "You have obtained the True Scriptures! Amazing!"}
-                </p>
-                {/* 🌟 修复：点击这里直接返回世界大厅 */}
-                <button onClick={() => { onBackToHub(); }} className={`px-10 py-4 text-xl font-bold rounded ${isMC ? 'bg-green-500 text-white font-mono border-b-4 border-green-800' : 'bg-orange-500 text-white font-sans shadow-lg hover:bg-orange-600'}`}>
-                    Continue Adventure
-                </button>
+if (showVictory) {
+    return (
+        <div 
+            className="fixed inset-0 z-[80] bg-black/90 flex flex-col items-center justify-center text-center animate-in zoom-in-95 duration-1000 cursor-pointer"
+            onClick={() => {
+                console.log("Victory modal clicked - returning to hub");
+                setShowVictory(false);
+                setView('level-select');
+                setTimeout(() => {
+                    if (typeof onBackToHub === 'function') {
+                        onBackToHub();
+                    }
+                }, 100);
+            }}
+        >
+            <div className="absolute inset-0 opacity-50 animate-pulse" style={{backgroundImage: isMC ? 'radial-gradient(#fff 1px, transparent 1px)' : 'radial-gradient(gold 1px, transparent 1px)', backgroundSize: '20px 20px'}}></div>
+            
+            {/* 胜利内容 */}
+            {isMC ? <Crown size={80} className="text-yellow-400 mb-6 animate-bounce" /> : <Scroll size={80} className="text-yellow-400 mb-6 animate-bounce" />}
+            <h1 className={`text-4xl md:text-6xl font-bold mb-4 uppercase tracking-widest ${isMC ? 'text-white font-mono' : 'text-yellow-200 font-sans'}`}>
+                {isMC ? "Victory!" : "Journey Completed!"}
+            </h1>
+            <p className={`text-xl mb-8 max-w-md px-4 ${isMC ? 'text-green-400 font-mono' : 'text-white font-sans'}`}>
+                {isMC ? "You defeated the Wither Storm! True Hero!" : "You have obtained the True Scriptures! Amazing!"}
+            </p>
+            
+            {/* 帝王金色提示框 */}
+            <div className="relative px-10 py-8 rounded-3xl bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 border-4 border-yellow-300 shadow-[0_0_50px_rgba(255,215,0,0.5)] animate-pulse hover:shadow-[0_0_60px_rgba(255,215,0,0.7)] transition-all duration-500">
+                {/* 金属质感边框 */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-yellow-200/30 to-transparent animate-shine"></div>
+                
+                {/* 主要内容 */}
+                <div className="relative z-10">
+                    <div className="flex items-center justify-center gap-3 mb-3">
+                        <div className="text-3xl">👑</div>
+                        <p className="text-3xl font-black text-yellow-900 drop-shadow-lg tracking-wide">
+                            CONTINUE
+                        </p>
+                        <div className="text-3xl">👑</div>
+                    </div>
+                    <p className="text-xl text-yellow-800 font-semibold tracking-wider">
+                        点击任意位置返回
+                    </p>
+                </div>
+                
+                {/* 装饰性元素 */}
+                <div className="absolute -top-3 -right-3 text-3xl animate-bounce">💎</div>
+                <div className="absolute -bottom-3 -left-3 text-3xl animate-bounce delay-300">💎</div>
             </div>
-        );
-    }
+            
+            {/* 添加CSS动画 */}
+            <style jsx>{`
+                @keyframes shine {
+                    0% { transform: translateX(-100%) rotate(45deg); }
+                    100% { transform: translateX(200%) rotate(45deg); }
+                }
+                .animate-shine {
+                    animation: shine 2s ease-in-out infinite;
+                }
+            `}</style>
+        </div>
+    );
+}
 
     if (view === 'level-select') {
         return <LevelSelectView theme={theme} username={username} progress={progress} episodes={episodes} onBack={onBackToHub} onSelectEpisode={handleLevelSelect} onOpenLeaderboard={onOpenLeaderboard} onOpenUnlock={onOpenUnlock} />;
